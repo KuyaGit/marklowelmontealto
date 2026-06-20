@@ -1,6 +1,23 @@
 import Image from "next/image";
 import { profile } from "@/data/profile";
+import { BASE_PATH } from "@/lib/site";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  FacebookIcon,
+  LinkedInIcon,
+  UpworkIcon,
+  YouTubeIcon,
+  OnlineJobsIcon,
+  ExternalLinkIcon,
+} from "@/components/icons";
+
+const socialLinks = [
+  { href: profile.social.facebook, label: "Facebook", icon: <FacebookIcon size={16} /> },
+  { href: profile.social.linkedin, label: "LinkedIn", icon: <LinkedInIcon size={16} /> },
+  { href: profile.social.onlinejobs, label: "OnlineJobs", icon: <OnlineJobsIcon size={16} /> },
+  { href: profile.social.upwork, label: "Upwork", icon: <UpworkIcon size={16} /> },
+  { href: profile.social.youtube, label: "YouTube", icon: <YouTubeIcon size={16} /> },
+];
 
 export function Header() {
   return (
@@ -8,27 +25,26 @@ export function Header() {
       <div className="flex flex-col sm:flex-row gap-6 sm:gap-8">
         {/* Avatar */}
         <div className="flex-shrink-0">
-          <div className="w-44 h-36 sm:w-52 sm:h-44 rounded-xl border border-border overflow-hidden relative">
+          <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-xl border border-border overflow-hidden relative">
             <Image
               src="/profile.JPG"
               alt="Mark Lowel Montealto — Full Stack Developer & DevOps Engineer"
               fill
               sizes="(max-width: 640px) 176px, 208px"
-              className="object-cover object-top"
+              className="object-cover object-[center_15%]"
               priority
             />
           </div>
         </div>
 
         {/* Info */}
-        <div className="flex flex-1 flex-col justify-between gap-3 min-w-0">
-          <div className="flex items-start justify-between gap-4">
-            <p className="text-xs font-medium tracking-widest uppercase text-foreground/50">
-              {profile.dateLine}
-            </p>
+        <div className="flex flex-1 flex-col min-w-0 relative">
+          {/* Theme toggle — absolute top-right so it doesn't push content down */}
+          <div className="absolute top-0 right-0">
             <ThemeToggle />
           </div>
 
+          {/* Name + role at the very top */}
           <div>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-none text-foreground">
               {profile.name.split(" ").slice(0, 2).join(" ")}
@@ -40,9 +56,35 @@ export function Header() {
             </p>
           </div>
 
-          <p className="text-sm leading-relaxed text-foreground/70 max-w-md">
-            {profile.intro}
-          </p>
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Social icons + résumé at the bottom */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {socialLinks.map(({ href, label, icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-muted hover:border-foreground/40 hover:text-foreground transition-colors duration-200"
+              >
+                {icon}
+              </a>
+            ))}
+
+            {/* Résumé download */}
+            <a
+              href={`${BASE_PATH}${profile.resume}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border text-xs font-medium text-muted hover:border-foreground/40 hover:text-foreground transition-colors duration-200"
+            >
+              <ExternalLinkIcon size={12} />
+              Résumé
+            </a>
+          </div>
         </div>
       </div>
     </header>

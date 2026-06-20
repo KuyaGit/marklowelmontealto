@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { profile } from "@/data/profile";
-import { ExternalLinkIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "About",
@@ -94,18 +93,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Resume download */}
-        <section>
-          <a
-            href={profile.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border bg-surface text-sm font-medium text-muted hover:border-foreground/40 hover:text-foreground transition-colors duration-200"
-          >
-            Download Résumé
-            <ExternalLinkIcon size={14} />
-          </a>
-        </section>
       </div>
     </>
   );
