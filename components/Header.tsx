@@ -27,7 +27,7 @@ export function Header() {
         <div className="flex-shrink-0">
           <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-xl border border-border overflow-hidden relative">
             <Image
-              src="/profile.JPG"
+              src={`${BASE_PATH}/profile.JPG`}
               alt="Mark Lowel Montealto — Full Stack Developer & DevOps Engineer"
               fill
               sizes="(max-width: 640px) 176px, 208px"
