@@ -37,6 +37,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
+          STATIC_EXPORT: "true"
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
 
