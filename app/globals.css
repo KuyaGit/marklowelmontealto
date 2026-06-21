@@ -42,9 +42,61 @@ body {
   overflow: hidden;
 }
 
-body {
+html {
+  /* Base fill lives on html so the negative-z glow layer is visible through body */
   background: var(--background);
+}
+
+body {
+  /* Transparent so the mouse-glow shows through; html provides the base color */
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-geist-sans, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Mouse-tracking glow background ─────────────────────────────────────── */
+@keyframes mouse-glow-rotate {
+  from { rotate: 0deg; }
+  50%  { scale: 1 1.5; }
+  to   { rotate: 360deg; }
+}
+
+.mouse-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mouse-glow__blob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  height: 34vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(12vmax);
+  animation: mouse-glow-rotate 20s linear infinite;
+}
+
+/* Light mode — soft pastel wash, subtle behind white panels */
+:root .mouse-glow__blob,
+[data-theme="light"] .mouse-glow__blob {
+  background: linear-gradient(to right, #6ee7b7, #c4b5fd);
+  opacity: 0.35;
+}
+
+/* Dark mode — vivid original palette */
+[data-theme="dark"] .mouse-glow__blob {
+  background: linear-gradient(to right, aquamarine, mediumpurple);
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mouse-glow__blob {
+    animation: none;
+  }
 }

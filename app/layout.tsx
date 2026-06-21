@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { getStructuredData } from "@/lib/jsonld";
 import { SITE_URL } from "@/lib/site";
+import { MouseGlow } from "@/components/MouseGlow";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -72,7 +73,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full bg-background text-foreground">{children}</body>
+      <body className="min-h-full text-foreground">
+        <MouseGlow />
+        {children}
+      </body>
     </html>
   );
 }
