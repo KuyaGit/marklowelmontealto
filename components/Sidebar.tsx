@@ -6,6 +6,7 @@ import { NavButton } from "@/components/NavButton";
 import {
   UserIcon,
   BriefcaseIcon,
+  CodeIcon,
   AwardIcon,
   BookIcon,
   MailIcon,
@@ -15,6 +16,7 @@ import {
 const iconMap: Record<string, React.ReactNode> = {
   "/about": <UserIcon size={22} />,
   "/works": <BriefcaseIcon size={22} />,
+  "/projects": <CodeIcon size={22} />,
   "/certificate": <AwardIcon size={22} />,
   "/blog": <BookIcon size={22} />,
   "/contact": <MailIcon size={22} />,

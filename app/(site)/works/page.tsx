@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function WorksPage() {
   return (
     <>
-      <SectionBar title="Works" />
+      <SectionBar title="Work Experiences" />
 
       <div className="p-4 sm:p-6 space-y-3">
         {works.map((work) => (
