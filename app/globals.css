@@ -82,11 +82,11 @@ body {
   animation: mouse-glow-rotate 20s linear infinite;
 }
 
-/* Light mode — soft pastel wash, subtle behind white panels */
+/* Light mode — vivid enough to show against white */
 :root .mouse-glow__blob,
 [data-theme="light"] .mouse-glow__blob {
-  background: linear-gradient(to right, #6ee7b7, #c4b5fd);
-  opacity: 0.35;
+  background: linear-gradient(to right, aquamarine, mediumpurple);
+  opacity: 0.75;
 }
 
 /* Dark mode — vivid original palette */
