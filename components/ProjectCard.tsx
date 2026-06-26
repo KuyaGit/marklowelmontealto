@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { BASE_PATH } from "@/lib/site";
 import { ExternalLinkIcon, techIconMap, techIconLabel } from "@/components/icons";
-import type { Project } from "@/data/projects";
+import type { Project } from "@/lib/types";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
@@ -10,7 +10,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="relative aspect-video w-full bg-surface-alt border-b border-border overflow-hidden">
         {project.image ? (
           <Image
-            src={`${BASE_PATH}${project.image}`}
+            src={project.image.startsWith("http") ? project.image : `${BASE_PATH}${project.image}`}
             alt={`${project.name} screenshot`}
             fill
             sizes="(max-width: 640px) 100vw, 50vw"

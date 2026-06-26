@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { ProjectCard } from "@/components/ProjectCard";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -21,7 +21,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
+
   return (
     <>
       <SectionBar title="Projects" />

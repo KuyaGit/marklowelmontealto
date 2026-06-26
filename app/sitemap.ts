@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { nav } from "@/data/nav";
-import { posts } from "@/data/posts";
-
-export const dynamic = "force-static";
+import { getPosts } from "@/lib/contentful";
 
 const LAST_UPDATED = new Date("2026-06-20");
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = await getPosts();
+
   const navRoutes = nav.map(({ href }) => ({
     url: `${SITE_URL}${href}`,
     lastModified: LAST_UPDATED,

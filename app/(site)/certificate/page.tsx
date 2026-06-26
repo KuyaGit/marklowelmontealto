@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { SectionBar } from "@/components/SectionBar";
-import { certificates } from "@/data/certificates";
+import { ExternalLinkIcon } from "@/components/icons";
+import { getCertificates } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "Certificates",
@@ -20,7 +22,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CertificatePage() {
+export default async function CertificatePage() {
+  const certificates = await getCertificates();
+
   return (
     <>
       <SectionBar title="Certificates" />
@@ -28,25 +32,52 @@ export default function CertificatePage() {
       <div className="p-4 sm:p-6 space-y-3">
         {certificates.map((cert) => (
           <article
-            key={cert.title}
-            className="p-4 sm:p-5 rounded-xl border border-border hover:border-foreground/20 transition-colors duration-200"
+            key={cert.slug}
+            className="p-4 sm:p-5 rounded-xl border border-border hover:border-foreground/20 transition-colors duration-200 flex gap-4"
           >
-            <div className="flex items-start justify-between gap-4 mb-1">
-              <h3 className="font-bold text-sm sm:text-base text-foreground leading-tight">
-                {cert.title}
-              </h3>
-              {cert.isFeatured && (
-                <span className="flex-shrink-0 text-xs font-semibold tracking-wider uppercase text-accent border border-accent/30 rounded-full px-2.5 py-0.5">
-                  Featured
-                </span>
+            {/* Certificate image */}
+            {cert.image && (
+              <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg border border-border overflow-hidden relative bg-surface-alt">
+                <Image
+                  src={cert.image}
+                  alt={`${cert.title} certificate`}
+                  fill
+                  sizes="80px"
+                  className="object-contain p-1"
+                />
+              </div>
+            )}
+
+            {/* Text content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-4 mb-1">
+                <h3 className="font-bold text-sm sm:text-base text-foreground leading-tight">
+                  {cert.title}
+                </h3>
+                {cert.isFeatured && (
+                  <span className="flex-shrink-0 text-xs font-semibold tracking-wider uppercase text-accent border border-accent/30 rounded-full px-2.5 py-0.5">
+                    Featured
+                  </span>
+                )}
+              </div>
+              <p className="text-xs font-semibold text-muted mb-1">
+                {cert.issuer} · {cert.date}
+              </p>
+              <p className="text-sm leading-relaxed text-foreground/70">
+                {cert.description}
+              </p>
+              {cert.verifiedUrl && (
+                <a
+                  href={cert.verifiedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-accent hover:opacity-75 transition-opacity"
+                >
+                  <ExternalLinkIcon size={12} />
+                  Verify certificate
+                </a>
               )}
             </div>
-            <p className="text-xs font-semibold text-muted mb-1">
-              {cert.issuer} · {cert.date}
-            </p>
-            <p className="text-sm leading-relaxed text-foreground/70">
-              {cert.description}
-            </p>
           </article>
         ))}
       </div>

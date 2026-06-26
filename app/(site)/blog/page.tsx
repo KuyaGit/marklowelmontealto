@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
-import { posts } from "@/data/posts";
+import { getPosts } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -21,7 +21,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getPosts();
+
   return (
     <>
       <SectionBar title="Blog" />
@@ -41,7 +43,7 @@ export default function BlogPage() {
                 )}
               </div>
               <p className="text-xs text-foreground/40 font-medium mb-2">
-                {post.date}
+                {formatDate(post.date)}
               </p>
               <p className="text-sm leading-relaxed text-muted line-clamp-2">
                 {post.excerpt}
@@ -52,4 +54,11 @@ export default function BlogPage() {
       </div>
     </>
   );
+}
+
+function formatDate(raw: string): string {
+  if (!raw) return "";
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return raw;
+  return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }

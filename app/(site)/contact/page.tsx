@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { MailIcon, ExternalLinkIcon } from "@/components/icons";
-import { profile } from "@/data/profile";
+import { getProfile } from "@/lib/contentful";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -21,28 +21,38 @@ export const metadata: Metadata = {
   },
 };
 
-const links = [
-  {
-    label: "Email",
-    value: profile.email,
-    href: `mailto:${profile.email}`,
-    icon: <MailIcon size={18} />,
-  },
-  {
-    label: "LinkedIn",
-    value: "linkedin.com/in/mmarklowelmontealto",
-    href: "https://www.linkedin.com/in/mmarklowelmontealto",
-    icon: <ExternalLinkIcon size={18} />,
-  },
-  {
-    label: "GitHub",
-    value: "github.com/marklowelmontealto",
-    href: "https://github.com/marklowelmontealto",
-    icon: <ExternalLinkIcon size={18} />,
-  },
-];
+export default async function ContactPage() {
+  const profile = await getProfile();
 
-export default function ContactPage() {
+  const links = [
+    {
+      label: "Email",
+      value: profile.email,
+      href: `mailto:${profile.email}`,
+      icon: <MailIcon size={18} />,
+    },
+    ...(profile.social.linkedin
+      ? [
+          {
+            label: "LinkedIn",
+            value: profile.social.linkedin.replace("https://www.", ""),
+            href: profile.social.linkedin,
+            icon: <ExternalLinkIcon size={18} />,
+          },
+        ]
+      : []),
+    ...(profile.social.github
+      ? [
+          {
+            label: "GitHub",
+            value: profile.social.github.replace("https://", ""),
+            href: profile.social.github,
+            icon: <ExternalLinkIcon size={18} />,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <>
       <SectionBar title="Contact" />
