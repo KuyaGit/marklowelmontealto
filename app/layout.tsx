@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description:
       "Full Stack Developer and DevOps Engineer — Angular, TypeScript, AWS, CI/CD.",
   },
-  alternates: { canonical: "/about" },
+
 };
 
 export const viewport: Viewport = {

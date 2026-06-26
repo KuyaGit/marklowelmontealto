@@ -12,6 +12,13 @@ const nextConfig: NextConfig = {
   basePath,
   assetPrefix: basePath || undefined,
   trailingSlash: true,
+  // SSR (Cloudflare) mode: 308 permanent redirect is stronger than meta-refresh for SEO.
+  // Static export (GitHub Pages) ignores this; app/page.tsx handles it via meta-refresh there.
+  ...(!isStaticExport && {
+    redirects: async () => [
+      { source: "/", destination: "/about", permanent: true },
+    ],
+  }),
 };
 
 export default nextConfig;
