@@ -37,7 +37,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_classes": ["DOShardedTagCache", "DOQueueHandler"]
+      "new_sqlite_classes": ["DOShardedTagCache", "DOQueueHandler"]
     }
   ],
 
