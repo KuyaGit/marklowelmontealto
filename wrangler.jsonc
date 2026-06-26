@@ -27,8 +27,8 @@
         "class_name": "DOShardedTagCache"
       },
       {
-        "name": "NEXT_QUEUE_DO",
-        "class_name": "DOQueue"
+        "name": "NEXT_CACHE_DO_QUEUE",
+        "class_name": "DOQueueHandler"
       }
     ]
   },
@@ -37,7 +37,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_classes": ["DOShardedTagCache", "DOQueue"]
+      "new_classes": ["DOShardedTagCache", "DOQueueHandler"]
     }
   ],
 
