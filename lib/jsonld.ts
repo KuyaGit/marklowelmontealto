@@ -30,7 +30,14 @@ export async function getGlobalGraph() {
     profile.social.youtube,
   ].filter(Boolean);
 
-  const person = {
+  // Merge Contentful knowsAbout with core technologies, deduplicating.
+  const knowsAboutSet = new Set<string>([
+    ...CORE_TECHNOLOGIES,
+    ...profile.knowsAbout,
+  ]);
+  const knowsAbout = Array.from(knowsAboutSet);
+
+  const person: Record<string, unknown> = {
     "@type": "Person",
     "@id": PERSON_ID,
     name: profile.name,
@@ -46,7 +53,16 @@ export async function getGlobalGraph() {
       addressLocality: profile.location || "Manila",
       addressCountry: "PH",
     },
-    ...(profile.knowsAbout.length > 0 && { knowsAbout: profile.knowsAbout }),
+    knowsAbout,
+    hasOccupation: {
+      "@type": "Occupation",
+      name: "Full Stack Developer",
+      occupationLocation: {
+        "@type": "Country",
+        name: "Philippines",
+      },
+      skills: CORE_TECHNOLOGIES.join(", "),
+    },
     ...(profile.worksForOrg && {
       worksFor: { "@type": "Organization", name: profile.worksForOrg },
     }),
@@ -75,7 +91,7 @@ export async function getGlobalGraph() {
 
   return {
     "@context": "https://schema.org",
-    "@graph": [person, website],
+    "@graph": [person, website, profilePage],
   };
 }
 

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { nav } from "@/data/nav";
 import { NavButton } from "@/components/NavButton";
 import {
+  HomeIcon,
   UserIcon,
   BriefcaseIcon,
   CodeIcon,
@@ -14,6 +15,7 @@ import {
 
 // Map route → icon component (keeps data/nav.ts as plain data, no component imports)
 const iconMap: Record<string, React.ReactNode> = {
+  "/": <HomeIcon size={22} />,
   "/about": <UserIcon size={22} />,
   "/works": <BriefcaseIcon size={22} />,
   "/projects": <CodeIcon size={22} />,
@@ -31,8 +33,9 @@ export function Sidebar() {
       className="flex flex-col items-center gap-4 pt-2"
     >
       {nav.map(({ href, label }) => {
+        // Exact match for root "/"; prefix match for all other routes.
         const isActive =
-          pathname === href || pathname.startsWith(href + "/");
+          href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
         return (
           <NavButton key={href} href={href} label={label} isActive={isActive}>
             {iconMap[href]}

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Mark Lowel Montealto",
   },
   description:
-    "Full Stack Developer and DevOps Engineer based in Manila, Philippines. 4+ years experience in Angular, TypeScript, AWS, CI/CD, and cloud-native infrastructure.",
+    "Official website of Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. Angular, React, Next.js, Laravel, AWS, Terraform, Cloudflare.",
   openGraph: {
     type: "website",
     siteName: "Mark Lowel Montealto",
