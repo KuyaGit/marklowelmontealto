@@ -15,9 +15,12 @@ COPY . .
 
 # Contentful credentials are required at build time because pages are
 # statically prerendered; they are also needed at runtime for ISR.
+ARG CONTENTFUL_SPACE_ID
+ARG CONTENTFUL_ACCESS_TOKEN
 
-
-ENV DOCKER_BUILD=true
+ENV DOCKER_BUILD=true \
+    CONTENTFUL_SPACE_ID=$CONTENTFUL_SPACE_ID \
+    CONTENTFUL_ACCESS_TOKEN=$CONTENTFUL_ACCESS_TOKEN
 
 RUN npm run build
 
