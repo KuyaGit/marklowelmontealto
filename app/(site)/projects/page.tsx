@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import { getProjects } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -26,6 +28,15 @@ export default async function ProjectsPage() {
 
   return (
     <>
+      <JsonLd
+        data={buildPageGraph({
+          path: "/projects",
+          name: "Projects — Mark Lowel Montealto",
+          description:
+            "Full stack developer projects by Mark Lowel Montealto — web apps built with Angular, React, Next.js, Node.js, AWS, and Docker.",
+          type: "CollectionPage",
+        })}
+      />
       <SectionBar title="Projects" />
 
       <div className="p-4 sm:p-6">
