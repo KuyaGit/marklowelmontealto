@@ -3,24 +3,26 @@ import { SectionBar } from "@/components/SectionBar";
 import { getProfile } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "About",
   description:
     "Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. 4+ years experience in Angular, TypeScript, AWS, and CI/CD automation.",
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About — Mark Lowel Montealto",
-    description:
-      "Full Stack Developer and DevOps Engineer specializing in Angular, TypeScript, AWS, and CI/CD pipelines. Community Lead at Angular Philippines.",
-    url: "/about",
-  },
-  twitter: {
-    title: "About — Mark Lowel Montealto",
-    description:
-      "Full Stack Developer and DevOps Engineer — Angular, TypeScript, AWS, CI/CD.",
-  },
-};
+  path: "/about",
+  keywords: [
+    "Mark Lowel Montealto",
+    "Full Stack Developer",
+    "Angular Developer",
+    "Laravel Developer",
+    "React Developer",
+    "AWS Engineer",
+    "Cloud Engineer",
+    "Terraform Developer",
+  ],
+  ogDescription:
+    "Full Stack Developer and DevOps Engineer specializing in Angular, TypeScript, AWS, and CI/CD pipelines. Community Lead at Angular Philippines.",
+});
 
 export default async function AboutPage() {
   const profile = await getProfile();
@@ -36,6 +38,10 @@ export default async function AboutPage() {
           type: "ProfilePage",
         })}
       />
+      <h1 className="sr-only">
+        Mark Lowel Montealto — Full Stack Developer, Angular &amp; React Developer,
+        Laravel Developer, AWS Cloud Engineer, Terraform Developer
+      </h1>
       <SectionBar title="About" />
 
       <div className="p-6 sm:p-8 space-y-8">

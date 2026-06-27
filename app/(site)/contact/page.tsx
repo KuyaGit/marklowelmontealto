@@ -4,24 +4,23 @@ import { MailIcon, ExternalLinkIcon } from "@/components/icons";
 import { getProfile } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Contact",
   description:
     "Get in touch with Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. Available for freelance and full-time opportunities.",
-  alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "Contact — Mark Lowel Montealto",
-    description:
-      "Get in touch — available for freelance projects and full-time opportunities in full-stack development and DevOps.",
-    url: "/contact",
-  },
-  twitter: {
-    title: "Contact — Mark Lowel Montealto",
-    description:
-      "Available for freelance and full-time full-stack development and DevOps opportunities.",
-  },
-};
+  path: "/contact",
+  keywords: [
+    "Mark Lowel Montealto",
+    "Full Stack Developer",
+    "Hire Full Stack Developer",
+    "AWS Engineer",
+    "Cloud Engineer",
+  ],
+  ogDescription:
+    "Get in touch — available for freelance projects and full-time opportunities in full-stack development and DevOps.",
+});
 
 export default async function ContactPage() {
   const profile = await getProfile();
@@ -66,6 +65,9 @@ export default async function ContactPage() {
           type: "ContactPage",
         })}
       />
+      <h1 className="sr-only">
+        Hire Mark Lowel Montealto — Full Stack Developer &amp; AWS Cloud Engineer in Manila, Philippines
+      </h1>
       <SectionBar title="Contact" />
 
       <div className="p-6 sm:p-8 space-y-8">

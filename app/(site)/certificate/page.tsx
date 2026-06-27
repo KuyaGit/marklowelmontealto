@@ -5,24 +5,23 @@ import { ExternalLinkIcon } from "@/components/icons";
 import { getCertificates } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Certificates",
   description:
     "Professional certifications earned by Mark Lowel Montealto — AWS Certified Cloud Practitioner, AWS re/Start Graduate, Google UX Design, and more.",
-  alternates: { canonical: "/certificate" },
-  openGraph: {
-    title: "Certificates — Mark Lowel Montealto",
-    description:
-      "AWS Certified Cloud Practitioner, AWS re/Start Graduate, AWS Academy Cloud Foundations, Google UX Design.",
-    url: "/certificate",
-  },
-  twitter: {
-    title: "Certificates — Mark Lowel Montealto",
-    description:
-      "AWS and professional certifications by Mark Lowel Montealto.",
-  },
-};
+  path: "/certificate",
+  keywords: [
+    "Mark Lowel Montealto",
+    "AWS Engineer",
+    "Cloud Engineer",
+    "Terraform Developer",
+    "AWS Certified Cloud Practitioner",
+  ],
+  ogDescription:
+    "AWS Certified Cloud Practitioner, AWS re/Start Graduate, AWS Academy Cloud Foundations, Google UX Design.",
+});
 
 export default async function CertificatePage() {
   const certificates = await getCertificates();
@@ -38,6 +37,9 @@ export default async function CertificatePage() {
           type: "CollectionPage",
         })}
       />
+      <h1 className="sr-only">
+        Mark Lowel Montealto — AWS Certified Cloud Engineer &amp; Professional Certifications
+      </h1>
       <SectionBar title="Certificates" />
 
       <div className="p-4 sm:p-6 space-y-3">

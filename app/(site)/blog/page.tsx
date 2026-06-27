@@ -4,24 +4,24 @@ import { SectionBar } from "@/components/SectionBar";
 import { getPosts } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Blog",
   description:
     "Technical articles by Mark Lowel Montealto on Angular, TypeScript, AWS, CI/CD pipelines, and DevOps engineering.",
-  alternates: { canonical: "/blog" },
-  openGraph: {
-    title: "Blog — Mark Lowel Montealto",
-    description:
-      "Technical articles on Angular, TypeScript, AWS cloud architecture, and CI/CD automation by a Full Stack Developer and DevOps Engineer.",
-    url: "/blog",
-  },
-  twitter: {
-    title: "Blog — Mark Lowel Montealto",
-    description:
-      "Technical articles on Angular, TypeScript, AWS, and CI/CD by Mark Lowel Montealto.",
-  },
-};
+  path: "/blog",
+  keywords: [
+    "Mark Lowel Montealto",
+    "Full Stack Developer",
+    "AWS Engineer",
+    "Cloud Engineer",
+    "Terraform Developer",
+    "Angular Developer",
+  ],
+  ogDescription:
+    "Technical articles on Angular, TypeScript, AWS cloud architecture, and CI/CD automation by a Full Stack Developer and DevOps Engineer.",
+});
 
 export default async function BlogPage() {
   const posts = await getPosts();
@@ -37,6 +37,9 @@ export default async function BlogPage() {
           type: "CollectionPage",
         })}
       />
+      <h1 className="sr-only">
+        Mark Lowel Montealto — Blog: Angular, AWS, Cloud Engineering &amp; Full Stack Development
+      </h1>
       <SectionBar title="Blog" />
 
       <div className="p-4 sm:p-6 space-y-3">

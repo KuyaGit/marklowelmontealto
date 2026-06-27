@@ -3,24 +3,23 @@ import { SectionBar } from "@/components/SectionBar";
 import { getWorks } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Works",
   description:
     "Work experience of Mark Lowel Montealto — DevOps Engineer, Full Stack Developer, and Angular Developer across multiple companies in the Philippines.",
-  alternates: { canonical: "/works" },
-  openGraph: {
-    title: "Works — Mark Lowel Montealto",
-    description:
-      "Professional experience in DevOps engineering, full-stack development, and Angular at Whitecloak Technologies, Pru Life UK, and more.",
-    url: "/works",
-  },
-  twitter: {
-    title: "Works — Mark Lowel Montealto",
-    description:
-      "DevOps, Full Stack, and Angular developer experience across multiple companies.",
-  },
-};
+  path: "/works",
+  keywords: [
+    "Mark Lowel Montealto",
+    "Full Stack Developer",
+    "Angular Developer",
+    "AWS Engineer",
+    "Cloud Engineer",
+  ],
+  ogDescription:
+    "Professional experience in DevOps engineering, full-stack development, and Angular at Whitecloak Technologies, Pru Life UK, and more.",
+});
 
 export default async function WorksPage() {
   const works = await getWorks();
@@ -36,6 +35,9 @@ export default async function WorksPage() {
           type: "CollectionPage",
         })}
       />
+      <h1 className="sr-only">
+        Mark Lowel Montealto — Work Experience as Full Stack Developer, Angular Developer &amp; AWS Cloud Engineer
+      </h1>
       <SectionBar title="Work Experiences" />
 
       <div className="p-4 sm:p-6 space-y-3">
