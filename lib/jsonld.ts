@@ -9,6 +9,21 @@ import type { Post } from "./types";
 const PERSON_ID = `${SITE_URL}/#person`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 
+const CORE_TECHNOLOGIES = [
+  "Angular",
+  "React",
+  "Next.js",
+  "React Native",
+  "TypeScript",
+  "Laravel",
+  "AWS",
+  "Terraform",
+  "Cloudflare",
+  "Node.js",
+  "Docker",
+  "CI/CD",
+];
+
 // ---------------------------------------------------------------------------
 // Global graph — Person + WebSite (injected once in the root layout)
 // ---------------------------------------------------------------------------
@@ -87,6 +102,17 @@ export async function getGlobalGraph() {
       "Full Stack Developer and DevOps Engineer portfolio — Angular, TypeScript, AWS, CI/CD, and cloud-native solutions.",
     author: { "@id": PERSON_ID },
     publisher: { "@id": PERSON_ID },
+  };
+
+  const profilePage = {
+    "@type": "ProfilePage",
+    "@id": `${SITE_URL}/#profilepage`,
+    url: SITE_URL,
+    name: `${profile.name} — Full Stack Developer`,
+    description:
+      "Official portfolio of Mark Lowel Montealto, a Full Stack Developer and DevOps Engineer based in Manila, Philippines.",
+    mainEntity: { "@id": PERSON_ID },
+    isPartOf: { "@id": WEBSITE_ID },
   };
 
   return {
