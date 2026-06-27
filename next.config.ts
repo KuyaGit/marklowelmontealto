@@ -20,13 +20,6 @@ const nextConfig: NextConfig = {
   basePath,
   assetPrefix: basePath || undefined,
   trailingSlash: true,
-  // SSR (Cloudflare/Node) mode: 308 permanent redirect for SEO.
-  // Static export (GitHub Pages) ignores this; app/page.tsx handles it via meta-refresh there.
-  ...(!isStaticExport && {
-    redirects: async () => [
-      { source: "/", destination: "/about", permanent: true },
-    ],
-  }),
 };
 
 export default nextConfig;

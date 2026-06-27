@@ -11,10 +11,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const navRoutes = nav.map(({ href }) => ({
     url: `${SITE_URL}${href}`,
     lastModified: LAST_UPDATED,
-    changeFrequency: (href === "/about" ? "monthly" : "yearly") as
+    changeFrequency: (href === "/" || href === "/about" ? "monthly" : "yearly") as
       | "monthly"
       | "yearly",
-    priority: href === "/about" ? 1 : href === "/works" ? 0.8 : 0.7,
+    priority: href === "/" ? 1 : href === "/about" ? 0.9 : href === "/works" ? 0.8 : 0.7,
   }));
 
   const blogRoutes = posts.map(({ slug }) => ({
