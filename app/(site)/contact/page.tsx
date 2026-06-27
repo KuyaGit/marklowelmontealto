@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { MailIcon, ExternalLinkIcon } from "@/components/icons";
 import { getProfile } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -55,6 +57,15 @@ export default async function ContactPage() {
 
   return (
     <>
+      <JsonLd
+        data={buildPageGraph({
+          path: "/contact",
+          name: "Contact — Mark Lowel Montealto",
+          description:
+            "Get in touch with Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. Available for freelance and full-time opportunities.",
+          type: "ContactPage",
+        })}
+      />
       <SectionBar title="Contact" />
 
       <div className="p-6 sm:p-8 space-y-8">

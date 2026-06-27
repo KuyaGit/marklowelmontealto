@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { getStructuredData } from "@/lib/jsonld";
+import { getGlobalGraph } from "@/lib/jsonld";
 import { SITE_URL } from "@/lib/site";
 import { MouseGlow } from "@/components/MouseGlow";
 import "./globals.css";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Mark Lowel Montealto",
   },
   description:
-    "Full Stack Developer and DevOps Engineer based in Manila, Philippines. 4+ years experience in Angular, TypeScript, AWS, CI/CD, and cloud-native infrastructure.",
+    "Official website of Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. Angular, React, Next.js, Laravel, AWS, Terraform, Cloudflare.",
   openGraph: {
     type: "website",
     siteName: "Mark Lowel Montealto",
@@ -56,7 +56,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = await getStructuredData();
+  const jsonLd = await getGlobalGraph();
 
   return (
     <html
