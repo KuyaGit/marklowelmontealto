@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { SectionBar } from "@/components/SectionBar";
 import { RichText } from "@/components/RichText";
 import { getPosts, getPostBySlug } from "@/lib/contentful";
+import { buildMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,24 +17,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post) return { title: "Post Not Found" };
+  if (!post) return { title: "Post Not Found", robots: { index: false } };
 
-  return {
+  return buildMetadata({
     title: post.title,
     description: post.excerpt,
-    alternates: { canonical: `/blog/${slug}` },
-    openGraph: {
-      title: `${post.title} — Mark Lowel Montealto`,
-      description: post.excerpt,
-      url: `/blog/${slug}`,
-      type: "article",
-      ...(post.coverImage ? { images: [{ url: post.coverImage }] } : {}),
-    },
-    twitter: {
-      title: `${post.title} — Mark Lowel Montealto`,
-      description: post.excerpt,
-    },
-  };
+    path: `/blog/${slug}`,
+    keywords: [
+      "Mark Lowel Montealto",
+      post.title,
+      "Full Stack Developer",
+      "AWS Engineer",
+      "Cloud Engineer",
+    ],
+    image: post.coverImage ?? "/og.png",
+    type: "article",
+  });
 }
 
 export default async function BlogPostPage({ params }: Props) {
