@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { getStructuredData } from "@/lib/jsonld";
+import { getGlobalGraph } from "@/lib/jsonld";
 import { SITE_URL } from "@/lib/site";
 import { MouseGlow } from "@/components/MouseGlow";
 import "./globals.css";
@@ -56,7 +56,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = await getStructuredData();
+  const jsonLd = await getGlobalGraph();
 
   return (
     <html
