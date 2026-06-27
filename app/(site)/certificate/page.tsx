@@ -3,6 +3,8 @@ import Image from "next/image";
 import { SectionBar } from "@/components/SectionBar";
 import { ExternalLinkIcon } from "@/components/icons";
 import { getCertificates } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -26,6 +28,15 @@ export default async function CertificatePage() {
 
   return (
     <>
+      <JsonLd
+        data={buildPageGraph({
+          path: "/certificate",
+          name: "Certificates — Mark Lowel Montealto",
+          description:
+            "Professional certifications earned by Mark Lowel Montealto — AWS Certified Cloud Practitioner, AWS re/Start Graduate, Google UX Design, and more.",
+          type: "CollectionPage",
+        })}
+      />
       <h1 className="sr-only">
         Mark Lowel Montealto — AWS Certified Cloud Engineer &amp; Professional Certifications
       </h1>

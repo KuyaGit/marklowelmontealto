@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { MailIcon, ExternalLinkIcon } from "@/components/icons";
 import { getProfile } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -54,6 +56,15 @@ export default async function ContactPage() {
 
   return (
     <>
+      <JsonLd
+        data={buildPageGraph({
+          path: "/contact",
+          name: "Contact — Mark Lowel Montealto",
+          description:
+            "Get in touch with Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. Available for freelance and full-time opportunities.",
+          type: "ContactPage",
+        })}
+      />
       <h1 className="sr-only">
         Hire Mark Lowel Montealto — Full Stack Developer &amp; AWS Cloud Engineer in Manila, Philippines
       </h1>

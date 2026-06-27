@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
 import { getPosts } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -26,6 +28,15 @@ export default async function BlogPage() {
 
   return (
     <>
+      <JsonLd
+        data={buildPageGraph({
+          path: "/blog",
+          name: "Blog — Mark Lowel Montealto",
+          description:
+            "Technical articles by Mark Lowel Montealto on Angular, TypeScript, AWS, CI/CD pipelines, and DevOps engineering.",
+          type: "CollectionPage",
+        })}
+      />
       <h1 className="sr-only">
         Mark Lowel Montealto — Blog: Angular, AWS, Cloud Engineering &amp; Full Stack Development
       </h1>

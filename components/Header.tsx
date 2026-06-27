@@ -58,11 +58,11 @@ export async function Header() {
 
           {/* Name + role at the very top */}
           <div>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-none text-foreground">
+            <p className="text-4xl sm:text-5xl font-bold tracking-tight leading-none text-foreground">
               {profile.name.split(" ").slice(0, 2).join(" ")}
               <br />
               {profile.name.split(" ").slice(2).join(" ")}
-            </h1>
+            </p>
             <p className="mt-1 text-sm font-medium tracking-wider text-foreground/50 uppercase">
               {profile.role}
             </p>

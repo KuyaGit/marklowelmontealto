@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { SectionBar } from "@/components/SectionBar";
 import { getWorks } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -24,6 +26,15 @@ export default async function WorksPage() {
 
   return (
     <>
+      <JsonLd
+        data={buildPageGraph({
+          path: "/works",
+          name: "Works — Mark Lowel Montealto",
+          description:
+            "Work experience of Mark Lowel Montealto — DevOps Engineer, Full Stack Developer, and Angular Developer across multiple companies in the Philippines.",
+          type: "CollectionPage",
+        })}
+      />
       <h1 className="sr-only">
         Mark Lowel Montealto — Work Experience as Full Stack Developer, Angular Developer &amp; AWS Cloud Engineer
       </h1>

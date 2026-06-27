@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { SectionBar } from "@/components/SectionBar";
 import { RichText } from "@/components/RichText";
 import { getPosts, getPostBySlug } from "@/lib/contentful";
+import { JsonLd } from "@/components/JsonLd";
+import { buildPageGraph, buildBlogPostingGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 interface Props {
@@ -42,6 +44,18 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
+      {/* WebPage node — breadcrumb + page identity */}
+      <JsonLd
+        data={buildPageGraph({
+          path: `/blog/${post.slug}`,
+          name: post.title,
+          description: post.excerpt,
+          type: "WebPage",
+          image: post.coverImage,
+        })}
+      />
+      {/* BlogPosting node — article metadata for rich results */}
+      <JsonLd data={buildBlogPostingGraph(post)} />
       <SectionBar title="Blog" />
 
       <article className="p-6 sm:p-8 max-w-2xl">
