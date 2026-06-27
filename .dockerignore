@@ -1,0 +1,13 @@
+.git
+.github
+.next
+.open-next
+.wrangler
+out
+node_modules
+npm-debug.log*
+*.md
+!README.md
+.env*
+cloudflare-env.d.ts
+tsconfig.tsbuildinfo

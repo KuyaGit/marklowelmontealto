@@ -1,13 +1,15 @@
 import type { NextConfig } from "next";
 
-// STATIC_EXPORT=true → GitHub Pages static build (output: "export" → out/)
-// Unset → Cloudflare Worker SSR build via OpenNext
+// STATIC_EXPORT=true  → GitHub Pages static build (output: "export" → out/)
+// DOCKER_BUILD=true   → standalone Node SSR image (output: "standalone")
+// Unset              → Cloudflare Worker SSR build via OpenNext
 const isStaticExport = process.env.STATIC_EXPORT === "true";
+const isDockerBuild = process.env.DOCKER_BUILD === "true";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const nextConfig: NextConfig = {
-  output: isStaticExport ? "export" : undefined,
+  output: isStaticExport ? "export" : isDockerBuild ? "standalone" : undefined,
   images: {
     unoptimized: true,
     remotePatterns: [
