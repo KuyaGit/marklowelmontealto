@@ -21,12 +21,21 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Mark Lowel Montealto",
     url: "/",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Mark Lowel Montealto — Full Stack Developer & DevOps Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mark Lowel Montealto — Full Stack Developer & DevOps Engineer",
     description:
       "Full Stack Developer and DevOps Engineer — Angular, TypeScript, AWS, CI/CD.",
+    images: ["/og.png"],
   },
 
 };
