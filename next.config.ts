@@ -30,5 +30,10 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-initOpenNextCloudflareForDev();
+
+// Only run the Cloudflare dev proxy when targeting Cloudflare Workers locally.
+// Skipped for Docker builds (workerd binary is not present in the image) and
+// static exports.
+if (!isDockerBuild && !isStaticExport) {
+  import("@opennextjs/cloudflare").then((m) => m.initOpenNextCloudflareForDev());
+}
