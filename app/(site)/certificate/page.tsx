@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
-import { ExternalLinkIcon } from "@/components/icons";
+import { ExternalLinkIcon, ArrowRightIcon } from "@/components/icons";
 import { getCertificates } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
@@ -93,6 +94,22 @@ export default async function CertificatePage() {
             </div>
           </article>
         ))}
+
+        {/* Internal links */}
+        <div className="mt-2 pt-6 border-t border-border flex flex-wrap gap-3">
+          <Link
+            href="/works"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            Work experience <ArrowRightIcon size={13} />
+          </Link>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            About me <ArrowRightIcon size={13} />
+          </Link>
+        </div>
       </div>
     </>
   );
