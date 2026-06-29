@@ -1,6 +1,6 @@
 import { getProfile } from "@/lib/contentful";
 import { SITE_URL } from "./site";
-import type { Post } from "./types";
+import type { Post, Certificate } from "./types";
 
 // ---------------------------------------------------------------------------
 // Stable @id references used across the graph
@@ -302,5 +302,41 @@ export function buildBlogPostingGraph(
     ...(category && { articleSection: category }),
     ...(wordCount && { wordCount }),
     ...(timeRequired && { timeRequired }),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Certifications graph builder
+// ---------------------------------------------------------------------------
+
+/**
+ * Builds an `ItemList` of `EducationalOccupationalCredential` nodes — the
+ * schema.org type Google uses for certifications / licenses.  Each item
+ * references the global `Person` node by its stable `@id`.
+ *
+ * Render alongside `buildPageGraph(...)` on the `/certificate` page.
+ *
+ * @param certs  The full array returned by `getCertificates()`.
+ */
+export function buildCertificationsGraph(certs: Certificate[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${SITE_URL}/certificate#credentials`,
+    itemListElement: certs.map((cert, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "EducationalOccupationalCredential",
+        name: cert.title,
+        credentialCategory: "certificate",
+        ...(cert.credentialId && { identifier: cert.credentialId }),
+        ...(cert.date && { dateCreated: cert.date }),
+        recognizedBy: { "@type": "Organization", name: cert.issuer },
+        ...(cert.verifiedUrl && { url: cert.verifiedUrl }),
+        ...(cert.skills?.length && { competencyRequired: cert.skills }),
+        about: { "@id": `${SITE_URL}/#person` },
+      },
+    })),
   };
 }

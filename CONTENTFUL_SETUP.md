@@ -164,6 +164,8 @@ Create these in **Contentful → Content model → Add content type**. The **Con
 | `image` | Image | Media (image) | | Certificate badge or thumbnail |
 | `verifiedUrl` | Verified URL | Short text | | Link to verify the certificate on the issuer's site |
 | `isFeatured` | Featured | Boolean | | Default: `false` |
+| `credentialId` | Credential ID | Short text | | Issuer-provided credential or license number (e.g. `ABC-1234-XYZ`) |
+| `skills` | Skills | Short text | | Comma-separated list of skills, e.g. `AWS, Cloud Security, Terraform` |
 
 ---
 

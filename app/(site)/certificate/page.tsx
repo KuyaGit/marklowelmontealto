@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ExternalLinkIcon, ArrowRightIcon } from "@/components/icons";
 import { getCertificates } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
-import { buildPageGraph } from "@/lib/jsonld";
+import { buildPageGraph, buildCertificationsGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -29,6 +30,7 @@ export default async function CertificatePage() {
 
   return (
     <>
+      {/* Page-level CollectionPage + BreadcrumbList JSON-LD */}
       <JsonLd
         data={buildPageGraph({
           path: "/certificate",
@@ -38,10 +40,22 @@ export default async function CertificatePage() {
           type: "CollectionPage",
         })}
       />
+      {/* Per-certificate EducationalOccupationalCredential JSON-LD */}
+      <JsonLd data={buildCertificationsGraph(certificates)} />
+
       <h1 className="sr-only">
         Mark Lowel Montealto — AWS Certified Cloud Engineer &amp; Professional Certifications
       </h1>
+
       <SectionBar title="Certificates" />
+
+      {/* Visible breadcrumb trail — mirrors the JSON-LD BreadcrumbList above */}
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/about" },
+          { label: "Certificates" },
+        ]}
+      />
 
       <div className="p-4 sm:p-6 space-y-3">
         {certificates.map((cert) => (
@@ -49,7 +63,7 @@ export default async function CertificatePage() {
             key={cert.slug}
             className="p-4 sm:p-5 rounded-xl border border-border hover:border-foreground/20 transition-colors duration-200 flex gap-4"
           >
-            {/* Certificate image */}
+            {/* Certificate badge / thumbnail */}
             {cert.image && (
               <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg border border-border overflow-hidden relative bg-surface-alt">
                 <Image
@@ -62,8 +76,9 @@ export default async function CertificatePage() {
               </div>
             )}
 
-            {/* Text content */}
+            {/* Card body */}
             <div className="flex-1 min-w-0">
+              {/* Title + Featured badge */}
               <div className="flex items-start justify-between gap-4 mb-1">
                 <h3 className="font-bold text-sm sm:text-base text-foreground leading-tight">
                   {cert.title}
@@ -74,18 +89,48 @@ export default async function CertificatePage() {
                   </span>
                 )}
               </div>
+
+              {/* Issuer · Date */}
               <p className="text-xs font-semibold text-muted mb-1">
                 {cert.issuer} · {cert.date}
               </p>
-              <p className="text-sm leading-relaxed text-foreground/70">
+
+              {/* Credential ID */}
+              {cert.credentialId && (
+                <p className="font-mono text-xs text-muted mb-1">
+                  Credential ID · {cert.credentialId}
+                </p>
+              )}
+
+              {/* Description */}
+              <p className="text-sm leading-relaxed text-foreground/70 mb-2">
                 {cert.description}
               </p>
+
+              {/* Skills learned */}
+              {cert.skills && cert.skills.length > 0 && (
+                <div className="mb-2">
+                  <h4 className="sr-only">Skills</h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {cert.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="text-xs rounded-full border border-border px-2.5 py-0.5 text-foreground/70"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Verify link */}
               {cert.verifiedUrl && (
                 <a
                   href={cert.verifiedUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-accent hover:opacity-75 transition-opacity"
+                  className="inline-flex items-center gap-1.5 mt-1 text-xs font-medium text-accent hover:opacity-75 transition-opacity"
                 >
                   <ExternalLinkIcon size={12} />
                   Verify certificate
@@ -95,7 +140,7 @@ export default async function CertificatePage() {
           </article>
         ))}
 
-        {/* Internal links */}
+        {/* Internal navigation links */}
         <div className="mt-2 pt-6 border-t border-border flex flex-wrap gap-3">
           <Link
             href="/works"
