@@ -63,6 +63,10 @@ export type Certificate = {
   image: string;
   verifiedUrl: string;
   isFeatured?: boolean;
+  /** Issuer-provided credential or license number. */
+  credentialId?: string;
+  /** Skills demonstrated by this credential. */
+  skills?: string[];
 };
 
 export type Profile = {

@@ -300,6 +300,15 @@ export const getCertificates = unstable_cache(
         image: assetUrl(f.image?.fields?.file?.url),
         verifiedUrl: f.verifiedUrl ?? "",
         isFeatured: f.isFeatured ?? false,
+        credentialId: f.credentialId ?? "",
+        // Contentful can store skills as a comma-separated Short text field
+        // or as a native Short text, list field — handle both gracefully.
+        skills:
+          typeof f.skills === "string"
+            ? f.skills.split(",").map((s: string) => s.trim()).filter(Boolean)
+            : Array.isArray(f.skills)
+              ? (f.skills as string[])
+              : [],
       };
     });
   },
