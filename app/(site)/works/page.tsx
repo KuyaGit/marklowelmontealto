@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
 import { getWorks } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { ArrowRightIcon } from "@/components/icons";
 
 export const metadata: Metadata = buildMetadata({
   title: "Works",
@@ -69,6 +71,28 @@ export default async function WorksPage() {
             </p>
           </article>
         ))}
+
+        {/* Internal links */}
+        <div className="mt-6 pt-6 border-t border-border flex flex-wrap gap-3">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            Browse projects <ArrowRightIcon size={13} />
+          </Link>
+          <Link
+            href="/certificate"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            View certifications <ArrowRightIcon size={13} />
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            Hire me <ArrowRightIcon size={13} />
+          </Link>
+        </div>
       </div>
     </>
   );

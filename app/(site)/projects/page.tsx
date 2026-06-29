@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import { getProjects } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { ArrowRightIcon } from "@/components/icons";
 
 export const metadata: Metadata = buildMetadata({
   title: "Projects",
@@ -47,6 +49,28 @@ export default async function ProjectsPage() {
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
+        </div>
+
+        {/* Internal links */}
+        <div className="mt-6 pt-6 border-t border-border flex flex-wrap gap-3">
+          <Link
+            href="/works"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            Work experience <ArrowRightIcon size={13} />
+          </Link>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            About me <ArrowRightIcon size={13} />
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-foreground transition-colors"
+          >
+            Get in touch <ArrowRightIcon size={13} />
+          </Link>
         </div>
       </div>
     </>
