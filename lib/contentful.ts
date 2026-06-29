@@ -1,6 +1,6 @@
 import { createClient } from "contentful";
 import { unstable_cache } from "next/cache";
-import type { Post, Project, TechKey, Work, Certificate, Profile } from "./types";
+import type { Post, Project, TechKey, Work, Certificate, Profile, Service, Testimonial, FaqItem } from "./types";
 import { slugify } from "./blog";
 
 // ---------------------------------------------------------------------------
@@ -29,6 +29,40 @@ function getClient() {
 function assetUrl(raw: string | undefined): string {
   if (!raw) return "";
   return raw.startsWith("//") ? `https:${raw}` : raw;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers — field extraction
+// ---------------------------------------------------------------------------
+
+/**
+ * Extracts plain text paragraphs from a Contentful field that may be either:
+ *  - A plain string (Long Text / Markdown)
+ *  - A Contentful Rich Text Document (serialized as a plain JSON object)
+ *
+ * Returns a multi-paragraph string separated by "\n\n", or undefined when the
+ * field is absent. This keeps the cached Profile object fully JSON-serializable.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function extractRichTextOrMarkdown(raw: any): string | undefined {
+  if (!raw) return undefined;
+  if (typeof raw === "string") return raw || undefined;
+  // Rich Text Document — walk top-level paragraph nodes
+  if (typeof raw === "object" && raw.nodeType === "document" && Array.isArray(raw.content)) {
+    const paragraphs: string[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    for (const node of raw.content as any[]) {
+      if (node.nodeType === "paragraph" && Array.isArray(node.content)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const text = (node.content as any[])
+          .map((leaf: any) => (typeof leaf.value === "string" ? leaf.value : ""))
+          .join("");
+        if (text.trim()) paragraphs.push(text.trim());
+      }
+    }
+    return paragraphs.length > 0 ? paragraphs.join("\n\n") : undefined;
+  }
+  return undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -82,6 +116,8 @@ export const getProfile = unstable_cache(
       worksForOrg: f.worksForOrg ?? "",
       communityOrg: f.communityOrg ?? "",
       communityOrgUrl: f.communityOrgUrl ?? "",
+      aboutLongText: extractRichTextOrMarkdown(f.aboutLong),
+      professionalSummary: extractRichTextOrMarkdown(f.professionalSummary),
     };
   },
   ["profile"],
@@ -278,6 +314,99 @@ export const getCertificates = unstable_cache(
   },
   ["certificates"],
   { tags: ["contentful", "certificates"], revalidate: 300 }
+);
+
+// ---------------------------------------------------------------------------
+// Services
+// ---------------------------------------------------------------------------
+
+export const getServices = unstable_cache(
+  async (): Promise<Service[]> => {
+    try {
+      const client = getClient();
+      const res = await client.getEntries({
+        content_type: "service",
+        order: ["fields.order"],
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return res.items.map((item) => {
+        const f = item.fields as Record<string, any>;
+        return {
+          title: f.title as string,
+          description: f.description as string,
+          order: f.order as number,
+          icon: typeof f.icon === "string" ? f.icon : undefined,
+        };
+      });
+    } catch {
+      return [];
+    }
+  },
+  ["services"],
+  { revalidate: 300, tags: ["contentful", "services"] }
+);
+
+// ---------------------------------------------------------------------------
+// Testimonials
+// ---------------------------------------------------------------------------
+
+export const getTestimonials = unstable_cache(
+  async (): Promise<Testimonial[]> => {
+    try {
+      const client = getClient();
+      const res = await client.getEntries({
+        content_type: "testimonial",
+        order: ["fields.order"],
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return res.items.map((item) => {
+        const f = item.fields as Record<string, any>;
+        return {
+          quote: f.quote as string,
+          author: f.author as string,
+          role: f.role as string,
+          company: typeof f.company === "string" ? f.company : undefined,
+          avatar: assetUrl(
+            (f.avatar as { fields: { file: { url: string } } } | undefined)
+              ?.fields?.file?.url
+          ) || undefined,
+          order: f.order as number,
+        };
+      });
+    } catch {
+      return [];
+    }
+  },
+  ["testimonials"],
+  { revalidate: 300, tags: ["contentful", "testimonials"] }
+);
+
+// ---------------------------------------------------------------------------
+// FAQ items
+// ---------------------------------------------------------------------------
+
+export const getFaqs = unstable_cache(
+  async (): Promise<FaqItem[]> => {
+    try {
+      const client = getClient();
+      const res = await client.getEntries({
+        content_type: "faqItem",
+        order: ["fields.order"],
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return res.items.map((item) => {
+        const f = item.fields as Record<string, any>;
+        return {
+          question: f.question as string,
+          answer: f.answer as string,
+        };
+      });
+    } catch {
+      return [];
+    }
+  },
+  ["faqs"],
+  { revalidate: 300, tags: ["contentful", "faqs"] }
 );
 
 // ---------------------------------------------------------------------------

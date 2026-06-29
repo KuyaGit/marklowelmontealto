@@ -1,6 +1,6 @@
 import { getProfile } from "@/lib/contentful";
 import { SITE_URL } from "./site";
-import type { Post, Certificate } from "./types";
+import type { Post, FaqItem, Certificate } from "./types";
 
 // ---------------------------------------------------------------------------
 // Stable @id references used across the graph
@@ -250,6 +250,37 @@ export function buildPageGraph({
   return {
     "@context": "https://schema.org",
     "@graph": [webPage, breadcrumbs],
+  };
+}
+
+// ---------------------------------------------------------------------------
+// FAQ graph builder
+// ---------------------------------------------------------------------------
+
+export type { FaqItem };
+
+/**
+ * Builds a `FAQPage` structured-data node from a list of Q&A pairs.
+ * Render with `<JsonLd data={buildFaqGraph(FAQS)} />` on any page that
+ * displays FAQ content.
+ *
+ * Google requires that the visible on-page answer text matches the
+ * `acceptedAnswer.text` value exactly — always derive both from the same
+ * source array so they stay in sync.
+ */
+export function buildFaqGraph(faqs: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${SITE_URL}/#faq`,
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.answer,
+      },
+    })),
   };
 }
 

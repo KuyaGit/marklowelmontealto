@@ -100,4 +100,29 @@ export type Profile = {
   communityOrg: string;
   /** Community org URL for JSON-LD Person.memberOf. */
   communityOrgUrl: string;
+  /** Plain-text paragraphs for the About Me section (extracted from Rich Text or Long Text). Falls back to hardcoded JSX when absent. */
+  aboutLongText?: string;
+  /** Markdown string — Professional Summary section. Falls back to hardcoded JSX when absent. */
+  professionalSummary?: string;
+};
+
+export type Service = {
+  title: string;
+  description: string;
+  order: number;
+  icon?: string;
+};
+
+export type Testimonial = {
+  quote: string;
+  author: string;
+  role: string;
+  company?: string;
+  avatar?: string;
+  order: number;
+};
+
+export type FaqItem = {
+  question: string;
+  answer: string;
 };
