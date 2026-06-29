@@ -22,7 +22,9 @@ export const mdxOptions: MdxOptions = {
       {
         // Use our fine-grained singleton instead of the full shiki bundle
         getHighlighter,
-        // Keep the dark background from github-dark theme
+        // Pin to a single registered theme so per-block theme meta in MDX
+        // content cannot reference an unloaded theme and blow the bundle.
+        theme: "github-dark",
         keepBackground: true,
         defaultLang: "text",
       },

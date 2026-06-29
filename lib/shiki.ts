@@ -31,7 +31,6 @@ import langSql from "shiki/langs/sql.mjs";
 import langMd from "shiki/langs/markdown.mjs";
 import langCss from "shiki/langs/css.mjs";
 import themeGithubDark from "shiki/themes/github-dark.mjs";
-import themeGithubDarkDimmed from "shiki/themes/github-dark-dimmed.mjs";
 
 // ---------------------------------------------------------------------------
 // Singleton — one highlighter instance reused across all renders.
@@ -45,7 +44,7 @@ let highlighterPromise: Promise<HighlighterCore> | null = null;
 export function getHighlighter(): Promise<any> {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighterCore({
-      themes: [themeGithubDark, themeGithubDarkDimmed],
+      themes: [themeGithubDark],
       langs: [
         langTs, langTsx, langJs, langJsx,
         langBash, langJson, langYaml,
