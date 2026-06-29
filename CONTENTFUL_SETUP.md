@@ -19,9 +19,9 @@ This document covers everything needed to set up Contentful for this portfolio s
 
 ## 2. Configure Environment Variables
 
-### Local development — `.dev.vars`
+### Local development — `.env`
 
-Fill in the placeholders already in `.dev.vars`:
+Create `.env` (git-ignored) in the project root:
 
 ```
 CONTENTFUL_SPACE_ID=<your space id>
@@ -30,28 +30,22 @@ CONTENTFUL_ENVIRONMENT=master
 CONTENTFUL_REVALIDATE_SECRET=<random string, e.g. openssl rand -hex 32>
 ```
 
-### Cloudflare (production)
+Next.js loads `.env` automatically for `next dev` and `next build`. You can also use `.env.local` for values you don't want in `.env`.
 
-Run these for the deployed worker:
+### Production (Docker / Coolify)
 
-```bash
-npx wrangler secret put CONTENTFUL_SPACE_ID
-npx wrangler secret put CONTENTFUL_ACCESS_TOKEN
-npx wrangler secret put CONTENTFUL_ENVIRONMENT
-npx wrangler secret put CONTENTFUL_REVALIDATE_SECRET
-```
+Pass the same vars at container runtime — see `DOCKER_DEPLOY.md` for the full `docker run -e` and Docker Compose setup. The key variables are:
 
----
-
-## 3. Create the R2 Bucket (ISR cache)
-
-```bash
-npx wrangler r2 bucket create marklowelmontealto-isr-cache
-```
+| Variable | Required at runtime |
+|---|---|
+| `CONTENTFUL_SPACE_ID` | ✓ (ISR revalidation) |
+| `CONTENTFUL_ACCESS_TOKEN` | ✓ (ISR revalidation) |
+| `CONTENTFUL_ENVIRONMENT` | optional (default: `master`) |
+| `CONTENTFUL_REVALIDATE_SECRET` | ✓ (webhook auth) |
 
 ---
 
-## 4. Configure the Revalidation Webhook
+## 3. Configure the Revalidation Webhook
 
 After deploying the site, add the webhook in **Contentful → Settings → Webhooks → Add webhook**:
 

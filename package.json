@@ -6,17 +6,11 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint",
-    "build": "next build",
-    "check:worker-size": "node scripts/check-worker-size.mjs",
-    "preview": "opennextjs-cloudflare build && node scripts/check-worker-size.mjs && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && node scripts/check-worker-size.mjs && opennextjs-cloudflare deploy",
-    "upload": "opennextjs-cloudflare build && node scripts/check-worker-size.mjs && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "build": "next build"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.2.1",
     "@contentful/rich-text-types": "^17.2.7",
-    "@opennextjs/cloudflare": "latest",
     "contentful": "^11.12.6",
     "geist": "^1.7.2",
     "github-slugger": "^2.0.0",
@@ -38,7 +32,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "latest"
+    "typescript": "^5"
   }
 }
