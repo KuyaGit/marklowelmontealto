@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
 import { getProfile } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { ArrowRightIcon } from "@/components/icons";
 
 export const metadata: Metadata = buildMetadata({
   title: "About",
@@ -89,6 +91,34 @@ export default async function AboutPage() {
             </div>
           </section>
         )}
+        {/* Internal links */}
+        <section aria-labelledby="explore-heading">
+          <h2
+            id="explore-heading"
+            className="text-xs font-semibold tracking-widest uppercase text-foreground/40 mb-4"
+          >
+            Explore more
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {[
+              { href: "/works", label: "Work experience", desc: "Companies and roles I've held" },
+              { href: "/projects", label: "Projects", desc: "Web, mobile, and infrastructure work" },
+              { href: "/certificate", label: "Certifications", desc: "AWS and industry credentials" },
+            ].map(({ href, label, desc }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group flex items-start justify-between gap-2 p-4 rounded-xl border border-border hover:border-foreground/30 transition-colors"
+              >
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{label}</p>
+                  <p className="text-xs text-foreground/50 mt-0.5">{desc}</p>
+                </div>
+                <ArrowRightIcon size={14} className="text-foreground/30 group-hover:text-foreground/60 transition-colors mt-0.5 flex-shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
     </>
   );

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
 import { RichText } from "@/components/RichText";
 import { getPosts, getPostBySlug } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph, buildBlogPostingGraph } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
+import { ArrowRightIcon } from "@/components/icons";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -39,8 +41,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const [post, allPosts] = await Promise.all([getPostBySlug(slug), getPosts()]);
   if (!post) notFound();
+
+  const morePosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
     <>
@@ -78,7 +82,45 @@ export default async function BlogPostPage({ params }: Props) {
             <p className="text-sm text-muted italic">Full article coming soon.</p>
           )}
         </div>
+
+        {/* Back to blog */}
+        <div className="mt-10 pt-8 border-t border-border">
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-foreground/50 hover:text-foreground transition-colors flex items-center gap-1.5"
+          >
+            ← All articles
+          </Link>
+        </div>
       </article>
+
+      {/* More posts */}
+      {morePosts.length > 0 && (
+        <section aria-labelledby="more-posts-heading" className="px-6 sm:px-8 pb-8 max-w-2xl">
+          <h2
+            id="more-posts-heading"
+            className="text-xs font-semibold tracking-widest uppercase text-foreground/40 mb-4"
+          >
+            More articles
+          </h2>
+          <div className="space-y-3">
+            {morePosts.map((p) => (
+              <Link key={p.slug} href={`/blog/${p.slug}`} className="block group">
+                <article className="p-4 rounded-xl border border-border group-hover:border-foreground/20 transition-colors">
+                  <h3 className="text-sm font-semibold text-foreground leading-tight mb-1">
+                    {p.title}
+                  </h3>
+                  <p className="text-xs text-foreground/40 mb-1.5">{formatDate(p.date)}</p>
+                  <p className="text-xs text-foreground/60 line-clamp-2">{p.excerpt}</p>
+                  <p className="mt-2 text-xs font-medium text-foreground/40 group-hover:text-foreground/60 transition-colors flex items-center gap-1">
+                    Read article <ArrowRightIcon size={11} />
+                  </p>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

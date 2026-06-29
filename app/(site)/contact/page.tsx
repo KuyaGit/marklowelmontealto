@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SectionBar } from "@/components/SectionBar";
-import { MailIcon, ExternalLinkIcon } from "@/components/icons";
+import { MailIcon, ExternalLinkIcon, ArrowRightIcon } from "@/components/icons";
 import { getProfile } from "@/lib/contentful";
 import { JsonLd } from "@/components/JsonLd";
 import { buildPageGraph } from "@/lib/jsonld";
@@ -108,6 +109,31 @@ export default async function ContactPage() {
               />
             </a>
           ))}
+        </section>
+
+        {/* Internal links */}
+        <section aria-labelledby="see-work-heading">
+          <h2
+            id="see-work-heading"
+            className="text-xs font-semibold tracking-widest uppercase text-foreground/40 mb-3"
+          >
+            See my work first
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            {[
+              { href: "/works", label: "Work experience" },
+              { href: "/projects", label: "Projects" },
+              { href: "/certificate", label: "Certifications" },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground/60 hover:border-foreground/30 hover:text-foreground transition-colors"
+              >
+                {label} <ArrowRightIcon size={13} />
+              </Link>
+            ))}
+          </div>
         </section>
       </div>
     </>
