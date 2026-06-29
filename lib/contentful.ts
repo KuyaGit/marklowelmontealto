@@ -1,6 +1,7 @@
 import { createClient } from "contentful";
 import { unstable_cache } from "next/cache";
 import type { Post, Project, TechKey, Work, Certificate, Profile } from "./types";
+import { slugify } from "./blog";
 
 // ---------------------------------------------------------------------------
 // Client (singleton – server-only, no NEXT_PUBLIC_ prefix)
@@ -138,8 +139,11 @@ export const getPosts = unstable_cache(
         excerpt: f.excerpt ?? "",
         date: f.date ?? "",
         body: f.body,
+        bodyMdx: typeof f.bodyMdx === "string" ? f.bodyMdx : undefined,
         coverImage: assetUrl(f.coverImage?.fields?.file?.url),
         isFeatured: f.isFeatured ?? false,
+        tags: Array.isArray(f.tags) ? f.tags : [],
+        category: typeof f.category === "string" ? f.category : undefined,
       };
     });
   },
@@ -167,8 +171,11 @@ export const getPostBySlug = unstable_cache(
       excerpt: f.excerpt ?? "",
       date: f.date ?? "",
       body: f.body,
+      bodyMdx: typeof f.bodyMdx === "string" ? f.bodyMdx : undefined,
       coverImage: assetUrl(f.coverImage?.fields?.file?.url),
       isFeatured: f.isFeatured ?? false,
+      tags: Array.isArray(f.tags) ? f.tags : [],
+      category: typeof f.category === "string" ? f.category : undefined,
     };
   },
   ["post-by-slug"],
@@ -263,3 +270,45 @@ export const getCertificates = unstable_cache(
   ["certificates"],
   { tags: ["contentful", "certificates"], revalidate: 300 }
 );
+
+// ---------------------------------------------------------------------------
+// Tag & category derivations (derived from cached getPosts() — no extra fetch)
+// ---------------------------------------------------------------------------
+
+/** Returns all unique tag slugs derived from published posts. */
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getPosts();
+  const slugSet = new Set<string>();
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      const s = slugify(tag);
+      if (s) slugSet.add(s);
+    }
+  }
+  return Array.from(slugSet).sort();
+}
+
+/** Returns all unique category slugs derived from published posts. */
+export async function getAllCategories(): Promise<string[]> {
+  const posts = await getPosts();
+  const slugSet = new Set<string>();
+  for (const post of posts) {
+    if (post.category) {
+      const s = slugify(post.category);
+      if (s) slugSet.add(s);
+    }
+  }
+  return Array.from(slugSet).sort();
+}
+
+/** Returns posts that have a given tag (matched by slug). */
+export async function getPostsByTag(tagSlug: string): Promise<Post[]> {
+  const posts = await getPosts();
+  return posts.filter((p) => p.tags.some((t) => slugify(t) === tagSlug));
+}
+
+/** Returns posts that belong to a given category (matched by slug). */
+export async function getPostsByCategory(categorySlug: string): Promise<Post[]> {
+  const posts = await getPosts();
+  return posts.filter((p) => p.category && slugify(p.category) === categorySlug);
+}

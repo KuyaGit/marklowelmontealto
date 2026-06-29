@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { getPosts, getCertificates } from "@/lib/contentful";
+import { getPosts, getCertificates, getAllTags, getAllCategories } from "@/lib/contentful";
+import { paginate } from "@/lib/blog";
 
 // ---------------------------------------------------------------------------
 // Fallback date used for pages that have no Contentful date field.
@@ -85,10 +86,12 @@ const STATIC_ROUTES: StaticRoute[] = [
 // so the sitemap stays fresh without hammering the API on every request.
 // ---------------------------------------------------------------------------
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Fetch only the content types that carry date fields we actually use.
-  const [posts, certificates] = await Promise.all([
+  // Fetch content — all derived from the already-cached getPosts() where possible.
+  const [posts, certificates, tags, categories] = await Promise.all([
     getPosts(),
     getCertificates(),
+    getAllTags(),
+    getAllCategories(),
   ]);
 
   // Derive freshness dates for the two listing pages from their newest item.
@@ -126,8 +129,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  // Pagination pages 2..N
+  const { totalPages } = paginate(posts, 1);
+  const paginationEntries = Array.from(
+    { length: Math.max(0, totalPages - 1) },
+    (_, i) => ({
+      url: `${SITE_URL}/blog/page/${i + 2}`,
+      lastModified: newestPostDate,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    })
+  );
+
+  // Tag listing pages
+  const tagEntries = tags.map((tag) => ({
+    url: `${SITE_URL}/blog/tag/${tag}`,
+    lastModified: newestPostDate,
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
+  }));
+
+  // Category listing pages
+  const categoryEntries = categories.map((cat) => ({
+    url: `${SITE_URL}/blog/category/${cat}`,
+    lastModified: newestPostDate,
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
+  }));
+
   // Canonical URLs intentionally omit trailing slashes, matching the
   // `alternates.canonical` values set in each page's generateMetadata/metadata
   // export. Consistency here prevents duplicate-URL penalties.
-  return [...staticEntries, ...blogPostEntries];
+  return [
+    ...staticEntries,
+    ...blogPostEntries,
+    ...paginationEntries,
+    ...tagEntries,
+    ...categoryEntries,
+  ];
 }
