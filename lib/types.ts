@@ -20,9 +20,16 @@ export type Post = {
   excerpt: string;
   /** ISO 8601 date string from Contentful (formatted on display). */
   date: string;
+  /** Legacy Contentful Rich Text body — kept for fallback during MDX migration. */
   body?: Document;
+  /** MDX/markdown source string — preferred over `body` when present. */
+  bodyMdx?: string;
   coverImage?: string;
   isFeatured?: boolean;
+  /** Fine-grained topic tags, e.g. ["TypeScript", "AWS"]. Slugified for URLs. */
+  tags: string[];
+  /** Broad category bucket, e.g. "Frontend" | "Backend" | "DevOps" | "Cloud". */
+  category?: string;
 };
 
 export type Project = {

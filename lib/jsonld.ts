@@ -257,6 +257,20 @@ export function buildPageGraph({
 // BlogPosting graph builder
 // ---------------------------------------------------------------------------
 
+export interface BlogPostingExtras {
+  /** Tags from Contentful → used as `keywords`. */
+  tags?: string[];
+  /** Category from Contentful → used as `articleSection`. */
+  category?: string;
+  /** Word count (from reading-time helper). */
+  wordCount?: number;
+  /**
+   * Reading time as an ISO 8601 duration string (e.g. "PT5M").
+   * Derived from `readingTime(bodyMdx).minutes`.
+   */
+  timeRequired?: string;
+}
+
 /**
  * Builds the `BlogPosting` node for a blog post page.
  *
@@ -264,9 +278,11 @@ export function buildPageGraph({
  * types. Render alongside `buildPageGraph(...)` on the post page.
  */
 export function buildBlogPostingGraph(
-  post: Pick<Post, "slug" | "title" | "excerpt" | "date" | "coverImage">
+  post: Pick<Post, "slug" | "title" | "excerpt" | "date" | "coverImage">,
+  extras: BlogPostingExtras = {}
 ) {
   const pageUrl = `${SITE_URL}/blog/${post.slug}`;
+  const { tags, category, wordCount, timeRequired } = extras;
 
   return {
     "@context": "https://schema.org",
@@ -282,5 +298,9 @@ export function buildBlogPostingGraph(
     ...(post.coverImage && {
       image: { "@type": "ImageObject", url: post.coverImage },
     }),
+    ...(tags && tags.length > 0 && { keywords: tags.join(", ") }),
+    ...(category && { articleSection: category }),
+    ...(wordCount && { wordCount }),
+    ...(timeRequired && { timeRequired }),
   };
 }

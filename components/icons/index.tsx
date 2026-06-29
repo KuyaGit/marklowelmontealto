@@ -144,6 +144,65 @@ export function CodeIcon({ className, size = 20 }: IconProps) {
   );
 }
 
+export function CopyIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <rect x="9" y="9" width="13" height="13" rx="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  );
+}
+
+export function CheckIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
+export function SearchIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
+  );
+}
+
+export function TagIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <path d="M12 2H2v10l9.29 9.29a1 1 0 0 0 1.42 0l7.58-7.58a1 1 0 0 0 0-1.42L12 2Z" />
+      <circle cx="7" cy="7" r="1" />
+    </svg>
+  );
+}
+
+export function ChevronLeftIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+}
+
+export function ChevronRightIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  );
+}
+
+export function XIcon({ className, size = 20 }: IconProps) {
+  return (
+    <svg {...base} width={size} height={size} viewBox="0 0 24 24" className={className}>
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
 // ─── Social brand icons (filled) ────────────────────────────────────────────
 
 export function FacebookIcon({ className, size = 20 }: IconProps) {

@@ -75,6 +75,13 @@ export default async function RootLayout({
             __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
           }}
         />
+        {/* RSS feed discovery */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Mark Lowel Montealto — Blog"
+          href="/rss.xml"
+        />
       </head>
       <body className="min-h-full text-foreground">
         <MouseGlow />

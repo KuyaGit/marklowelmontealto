@@ -20,6 +20,17 @@ const nextConfig: NextConfig = {
   basePath,
   assetPrefix: basePath || undefined,
   trailingSlash: true,
+  /**
+   * Externalize the MDX compiler and Shiki so they are NOT bundled into the
+   * Cloudflare worker chunk. This keeps the worker under the 3 MiB cap.
+   * The WASM engine is loaded as an asset reference rather than inlined.
+   */
+  serverExternalPackages: [
+    "@mdx-js/mdx",
+    "shiki",
+    "@shikijs/core",
+    "@shikijs/engine-oniguruma",
+  ],
 };
 
 export default nextConfig;
