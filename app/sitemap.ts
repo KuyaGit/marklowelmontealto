@@ -49,8 +49,12 @@ type StaticRoute = {
 };
 
 const STATIC_ROUTES: StaticRoute[] = [
-  // /about is the indexable "home" — meta-refresh on / redirects here.
-  { href: "/about",       priority: 1.0, changeFrequency: "monthly" },
+  // / is the canonical landing page — the rich homepage Google should rank for
+  // the brand query "Mark Lowel Montealto".
+  { href: "/",            priority: 1.0, changeFrequency: "monthly" },
+
+  // /about is a secondary profile page — useful but not the primary result.
+  { href: "/about",       priority: 0.8, changeFrequency: "monthly" },
 
   // Core portfolio content — shown prominently to potential clients/employers.
   { href: "/works",       priority: 0.8, changeFrequency: "monthly" },
@@ -104,9 +108,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // where relevant.
   const staticEntries = STATIC_ROUTES.map(({ href, priority, changeFrequency }) => {
     let lastModified: Date;
-    if (href === "/blog")        lastModified = newestPostDate;
+    if (href === "/blog")             lastModified = newestPostDate;
     else if (href === "/certificate") lastModified = newestCertificateDate;
-    else                         lastModified = LAST_UPDATED;
+    else                              lastModified = LAST_UPDATED;
 
     return {
       url: `${SITE_URL}${href}`,

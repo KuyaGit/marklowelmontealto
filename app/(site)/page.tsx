@@ -75,7 +75,7 @@ export default async function HomePage() {
           name: "Mark Lowel Montealto — Full Stack Developer & DevOps Engineer",
           description:
             "Official portfolio of Mark Lowel Montealto, a Full Stack Developer and DevOps Engineer based in Manila, Philippines.",
-          type: "ProfilePage",
+          type: "WebPage",
         })}
       />
       {faqs.length > 0 && <JsonLd data={buildFaqGraph(faqs)} />}

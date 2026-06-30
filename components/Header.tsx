@@ -38,7 +38,7 @@ export async function Header() {
               src={
                 profile.avatar
                   ? profile.avatar
-                  : `${BASE_PATH}/profile.JPG`
+                  : `${BASE_PATH}/og.png`
               }
               alt="Mark Lowel Montealto — Full Stack Developer & DevOps Engineer"
               fill

@@ -37,7 +37,13 @@ export const metadata: Metadata = {
       "Full Stack Developer and DevOps Engineer — Angular, TypeScript, AWS, CI/CD.",
     images: ["/og.png"],
   },
-
+  // Google Search Console verification token — set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+  // in your deployment environment (Vercel env vars, .env.local, etc.).
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    },
+  }),
 };
 
 export const viewport: Viewport = {

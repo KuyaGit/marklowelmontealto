@@ -30,12 +30,8 @@ export const dynamic = "force-static";
 //                hashed filenames).  Not human-readable pages; keeping crawlers
 //                out prevents them from wasting budget on assets.
 //
-//   Note: The root "/" is NOT disallowed even though app/page.tsx sets
-//   `robots: { index: false }`.  We *want* crawlers to reach "/" so they can
-//   follow the <meta http-equiv="refresh"> redirect to "/about" and index the
-//   canonical landing page.  The noindex directive on "/" tells crawlers not to
-//   add "/" itself to the index — it does not prevent them from crawling it or
-//   following its redirect.
+//   Note: The root "/" is fully indexable — it is the canonical landing page for
+//   the brand query "Mark Lowel Montealto".  Crawlers should index it directly.
 //
 //   sitemap: `${SITE_URL}/sitemap.xml`
 //     Points every crawler to the sitemap so they discover all URLs and their

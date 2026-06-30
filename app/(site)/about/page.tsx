@@ -37,7 +37,7 @@ export default async function AboutPage() {
           name: "About — Mark Lowel Montealto",
           description:
             "Mark Lowel Montealto — Full Stack Developer and DevOps Engineer based in Manila, Philippines. 4+ years experience in Angular, TypeScript, AWS, and CI/CD automation.",
-          type: "ProfilePage",
+          type: "WebPage",
         })}
       />
       <h1 className="sr-only">

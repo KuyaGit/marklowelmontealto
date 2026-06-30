@@ -59,9 +59,8 @@ export async function getGlobalGraph() {
     jobTitle: profile.role,
     url: SITE_URL,
     email: profile.email,
-    // Prefer the Contentful avatar; fall back to the OG image (the only
-    // guaranteed image in public/). The old fallback `/profile.JPG` does not
-    // exist in production.
+    // Prefer the Contentful avatar; fall back to the OG image which is always
+    // present in public/. The old fallback `/profile.JPG` does not exist.
     image: profile.avatar || `${SITE_URL}/og.png`,
     address: {
       "@type": "PostalAddress",
@@ -96,7 +95,7 @@ export async function getGlobalGraph() {
   const website = {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
-    name: `${profile.name} — Portfolio`,
+    name: profile.name,
     url: SITE_URL,
     description:
       "Full Stack Developer and DevOps Engineer portfolio — Angular, TypeScript, AWS, CI/CD, and cloud-native solutions.",
@@ -140,7 +139,7 @@ function buildBreadcrumbs(path: string, label: string) {
   const pageUrl = `${SITE_URL}${path}`;
   const segments = path.replace(/^\//, "").split("/").filter(Boolean);
 
-  // First crumb: Home → /about
+  // First crumb: Home → / (the canonical landing page)
   const items: Array<{
     "@type": "ListItem";
     position: number;
@@ -151,7 +150,7 @@ function buildBreadcrumbs(path: string, label: string) {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: `${SITE_URL}/about`,
+      item: SITE_URL,
     },
   ];
 

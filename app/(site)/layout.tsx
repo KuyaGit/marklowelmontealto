@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
+import { Footer } from "@/components/Footer";
 
 export default function SiteLayout({
   children,
@@ -16,6 +17,8 @@ export default function SiteLayout({
         {/* Main content panel — the only scrollable region */}
         <main className="flex-1 min-w-0 rounded-2xl bg-surface border border-border overflow-y-auto">
           {children}
+          {/* Footer provides text navigation for search engine sitelinks */}
+          <Footer />
         </main>
       </div>
     </div>
